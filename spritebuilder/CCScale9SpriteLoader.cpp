@@ -9,10 +9,10 @@ using namespace cocos2d::extension;
 #define PROPERTY_OPACITY "opacity"
 #define PROPERTY_BLENDFUNC "blendFunc"
 #define PROPERTY_PREFEREDSIZE "preferedSize" // TODO Should be "preferredSize". This is a typo in cocos2d-iphone, cocos2d-x and CocosBuilder!
-#define PROPERTY_INSETLEFT "insetLeft"
-#define PROPERTY_INSETTOP "insetTop"
-#define PROPERTY_INSETRIGHT "insetRight"
-#define PROPERTY_INSETBOTTOM "insetBottom"
+#define PROPERTY_MARGINLEFT "marginLeft"
+#define PROPERTY_MARGINTOP "marginTop"
+#define PROPERTY_MARGINRIGHT "marginRight"
+#define PROPERTY_MARGINBOTTOM "marginBottom"
 
 namespace spritebuilder {
 
@@ -65,13 +65,13 @@ void Scale9SpriteLoader::onHandlePropTypeSize(Node * pNode, Node * pParent, cons
 }
 
 void Scale9SpriteLoader::onHandlePropTypeFloat(Node * pNode, Node * pParent, const char * pPropertyName, float pFloat, CCBReader * ccbReader) {
-    if(strcmp(pPropertyName, PROPERTY_INSETLEFT) == 0) {
+    if(strcmp(pPropertyName, PROPERTY_MARGINLEFT) == 0) {
         this->_insetLeft = pFloat;
-    } else if(strcmp(pPropertyName, PROPERTY_INSETTOP) == 0) {
+    } else if(strcmp(pPropertyName, PROPERTY_MARGINTOP) == 0) {
         this->_insetTop = pFloat;
-    } else if(strcmp(pPropertyName, PROPERTY_INSETRIGHT) == 0) {
+    } else if(strcmp(pPropertyName, PROPERTY_MARGINRIGHT) == 0) {
         this->_insetRight = pFloat;
-    } else if(strcmp(pPropertyName, PROPERTY_INSETBOTTOM) == 0) {
+    } else if(strcmp(pPropertyName, PROPERTY_MARGINBOTTOM) == 0) {
         this->_insetBottom = pFloat;
     } else {
         NodeLoader::onHandlePropTypeFloat(pNode, pParent, pPropertyName, pFloat, ccbReader);
@@ -83,10 +83,12 @@ void Scale9SpriteLoader::onDone(cocos2d::Node * pNode, cocos2d::Node * pParent, 
     ((Scale9Sprite *)pNode)->setContentSize(_contentSize);
     ((Scale9Sprite *)pNode)->setPreferredSize(_contentSize);
     
-    ((Scale9Sprite *)pNode)->setInsetLeft(_insetLeft);
-    ((Scale9Sprite *)pNode)->setInsetTop(_insetTop);
-    ((Scale9Sprite *)pNode)->setInsetRight(_insetRight);
-    ((Scale9Sprite *)pNode)->setInsetBottom(_insetBottom);
+	Size size = ((Scale9Sprite *)pNode)->getOriginalSize();
+	
+    ((Scale9Sprite *)pNode)->setInsetLeft(size.width * _insetLeft);
+    ((Scale9Sprite *)pNode)->setInsetTop(size.height * _insetTop);
+    ((Scale9Sprite *)pNode)->setInsetRight(size.width * _insetRight);
+    ((Scale9Sprite *)pNode)->setInsetBottom(size.height * _insetBottom);
     
     
     if (_spriteFrame)
